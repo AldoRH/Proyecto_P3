@@ -46,7 +46,7 @@ function ProductScreen() {
 
   const save = async () => {
     
-    if (formProduct.pv <= formProduct.pc) {
+    if (parseFloat(formProduct.pv) <= parseFloat(formProduct.pc)) {
       setError("El precio de venta debe ser mayor que el precio de compra");
       return;
     }
@@ -77,13 +77,13 @@ function ProductScreen() {
         <Grid container marginTop={3}>
           <Grid item md={4} sm={3} xs={0}></Grid>
           <Grid item md={4} sm={6} xs={12}>
-            <TextField type="text" name="name" value={formProduct.name} onChange={handleChange} fullWidth={true} label="Nombre" variant="outlined" />
+            <TextField type="text" required name="name" value={formProduct.name} onChange={handleChange} fullWidth={true} label="Nombre" variant="outlined" />
             <br/><br/>
-            <TextField type="text" name="pv" value={formProduct.pv} onChange={handleChange} fullWidth={true} label="Precio venta" variant="outlined" />
+            <TextField type="number" required name="pv" value={formProduct.pv} onChange={handleChange} fullWidth={true} label="Precio venta" variant="outlined" />
             <br/><br/>
-            <TextField type="text" name="pc" value={formProduct.pc} onChange={handleChange} fullWidth={true} label="Precio compra" variant="outlined" />
+            <TextField type="number" required name="pc" value={formProduct.pc} onChange={handleChange} fullWidth={true} label="Precio compra" variant="outlined" />
             <br/><br/>
-            <TextField type="text" name="stock" value={formProduct.stock} onChange={handleChange} fullWidth={true} label="Stock" variant="outlined" />
+            <TextField type="number" required name="stock" value={formProduct.stock} onChange={handleChange} fullWidth={true} label="Stock" variant="outlined" inputProps={{ min: 1 }}/>
             <br/><br/>
             <Button variant="outlined" onClick={save} >Save</Button>
             <NavLink 

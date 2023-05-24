@@ -77,9 +77,9 @@ function ServiceScreen() {
           <Grid item md={4} sm={6} xs={12}>
             <TextField type="text" name="name" value={formService.name} onChange={handleChange} fullWidth={true} label="Nombre" variant="outlined" />
             <br/><br/>
-            <TextField type="text" name="pv" value={formService.pv} onChange={handleChange} fullWidth={true} label="Precio venta" variant="outlined" />
+            <TextField type="number" name="pv" value={formService.pv} onChange={handleChange} fullWidth={true} label="Precio venta" variant="outlined" />
             <br/><br/>
-            <TextField type="text" name="cs" value={formService.cs} onChange={handleChange} fullWidth={true} label="Costo de servicio" variant="outlined" />
+            <TextField type="number" name="cs" value={formService.cs} onChange={handleChange} fullWidth={true} label="Costo de servicio" variant="outlined" />
             <br/><br/>
             <Button variant="outlined" onClick={save} >Save</Button>
             <NavLink 
