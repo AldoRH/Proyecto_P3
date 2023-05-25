@@ -1,16 +1,23 @@
-import { useState } from "react"
+import { useReducer } from "react";
+
+const formReducer = (state: any, action: any) => {
+  switch (action.type) {
+    case "CHANGE":
+      return { ...state, [action.payload.name]: action.payload.value };
+    default:
+      return state;
+  }
+};
 
 const useForm = (initialState: any) => {
-    const [state, setState] = useState(initialState);
+  const [state, dispatch] = useReducer(formReducer, initialState);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState((state: any) => ({ ...state, [e.target.name] : e.target.value }));
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    dispatch({ type: "CHANGE", payload: { name, value } });
+  };
 
-    return [
-        state,
-        handleChange
-    ];
-}
+  return [state, handleChange];
+};
 
 export default useForm;

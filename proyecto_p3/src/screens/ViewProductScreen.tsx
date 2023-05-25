@@ -79,7 +79,6 @@ function ProductScreen() {
             <br/><br/>
             <TextField type="text" disabled name="stock" value={formProduct.stock} onChange={handleChange} fullWidth={true} label="Stock" variant="outlined" />
             <br/><br/>
-            <Button variant="outlined" onClick={save} >Save</Button>
             <NavLink 
                 to={`/products`} 
                 className="btn btn-info mx-2"
