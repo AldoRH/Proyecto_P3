@@ -50,7 +50,9 @@ function ServicesScreen() {
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
             <Typography variant="h4">Service list</Typography>
-            <NavLink to={`/services/0`} className="btn btn-info mx-2">Add new service</NavLink>
+            <NavLink to={`/services/0`} className="btn btn-info mx-2">
+              Add new service
+            </NavLink>
             <Divider color="black" />
           </Grid>
         </Grid>
