@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Container,
@@ -15,34 +14,35 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 import { NavLink } from "react-router-dom";
-import { getProducts, deleteProduct } from "../resources/ProductsFirebase";
-import useForm from "../hooks/useForm";
-import {
-  DocumentData,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
-} from "firebase/firestore";
+import { getSales, deleteSale } from "../resources/SalesFirebase";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 function SalesScreen() {
-    const [products, setProducts] = useState< QueryDocumentSnapshot<DocumentData>[] | [] >([]);
-
+  const [sales, setSales] = useState<
+    QueryDocumentSnapshot<DocumentData>[] | []
+  >([]);
 
   useEffect(() => {
-    getProductsData();
+    getSalesData();
   }, []);
 
-  const getProductsData = async () => {
-    const fbProducts = await getProducts();
-    setProducts(fbProducts.docs);
+  const getSalesData = async () => {
+    try {
+      const sales = await getSales();
+      setSales(sales || []);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const removeProduct = async (productId: any) => {
-    await deleteProduct(productId);
-    getProductsData();
+  const removeSale = async (productId: any) => {
+    await deleteSale(productId);
+    getSalesData();
   };
-  
-  const navigate = useNavigate();
+
   return (
     <Container>
       <Grid container spacing={2} marginTop={3}>
@@ -50,7 +50,9 @@ function SalesScreen() {
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
             <Typography variant="h4">Product list</Typography>
-            <NavLink to={`/sales/0`} className="btn btn-info mx-2">Add new sale</NavLink>
+            <NavLink to={`/sales/0`} className="btn btn-info mx-2">
+              Add new sale
+            </NavLink>
             <Divider color="black" />
           </Grid>
         </Grid>
@@ -61,65 +63,87 @@ function SalesScreen() {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell align="right">Nombre</TableCell>
-                    <TableCell align="right">Precio de venta</TableCell>
-                    <TableCell align="right">Precio de compra</TableCell>
-                    <TableCell align="right">Stock</TableCell>
+                    <TableCell align="center">ID</TableCell>
+                    <TableCell align="center">Products/Services</TableCell>
+                    <TableCell align="center">Total</TableCell>
+                    <TableCell align="center">Sale Date</TableCell>
                     <TableCell align="center">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {products.map(
-                    (product: QueryDocumentSnapshot<DocumentData>) => {
-                      const { name, pv, pc, stock } = product.data();
-                      const { id } = product;
-                      return (
-                        <TableRow
-                          key={id}
-                          sx={{
-                            "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
-                          <TableCell>{id}</TableCell>
-                          <TableCell align="right"> {name}</TableCell>
-                          <TableCell align="right">{pv}</TableCell>
-                          <TableCell align="right">{pc}</TableCell>
-                          <TableCell align="right">{stock}</TableCell>
-                          <TableCell>
-                            <NavLink
-                              to={`/products/${id}`}
-                              className="btn btn-info mx-2"
-                            >
-                              Edit
-                            </NavLink>
+                  {sales.map((sale: QueryDocumentSnapshot<DocumentData>) => {
+                    const { total, createdAt, products, services } =
+                      sale.data();
+                    const { id } = sale;
 
-                            <Button
-                              variant="contained"
-                              color="error"
-                              startIcon={<DeleteIcon />}
-                              onClick={() => {
-                                const shouldDelete = window.confirm(
-                                  "Are you sure you want to delete this product?"
-                                );
-                                if (shouldDelete) {
-                                  removeProduct(id);
-                                }
-                              }}
-                            >
-                              Delete
-                            </Button>
-                            <NavLink
-                              to={`/view-product/${id}`}
-                              className="btn btn-info mx-2"
-                            >
-                              View
-                            </NavLink>
-                          </TableCell>
-                        </TableRow>
-                      );
+                    let productDetails = "";
+                    if (products && products.length > 0) {
+                      productDetails = products
+                        .map(
+                          (product: any) =>
+                            `${product.name} (${product.quantity} x $${product.price})`
+                        )
+                        .join(", ");
                     }
-                  )}
+
+                    let serviceDetails = "";
+                    if (services && services.length > 0) {
+                      serviceDetails = services
+                        .map(
+                          (service: any) =>
+                            `${service.name} (${service.quantity} x $${service.price})`
+                        )
+                        .join(", ");
+                    }
+
+                    const combinedDetails =
+                      productDetails && serviceDetails
+                        ? `${productDetails} & ${serviceDetails}`
+                        : productDetails || serviceDetails;
+
+                    return (
+                      <TableRow
+                        key={id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell align="center">{id}</TableCell>
+                        <TableCell align="center">{combinedDetails}</TableCell>
+                        <TableCell align="center">${total}</TableCell>
+                        <TableCell align="center">
+                          {format(
+                            new Date(createdAt),
+                            "d 'de' MMMM 'de' yyyy, HH:mm",
+                            { locale: es }
+                          )}
+                        </TableCell>
+                        <TableCell align="center">
+                          <NavLink
+                            to={`/view-sale/${id}`}
+                            className="btn btn-info mx-2"
+                          >
+                            View
+                          </NavLink>
+                          <Button
+                            variant="contained"
+                            color="error"
+                            startIcon={<DeleteIcon />}
+                            onClick={() => {
+                              const shouldDelete = window.confirm(
+                                "Are you sure you want to delete this sale?"
+                              );
+                              if (shouldDelete) {
+                                removeSale(id);
+                              }
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -129,4 +153,5 @@ function SalesScreen() {
     </Container>
   );
 }
+
 export default SalesScreen;
