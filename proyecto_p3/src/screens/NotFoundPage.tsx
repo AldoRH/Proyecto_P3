@@ -1,20 +1,17 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-function Home() {
+export const NotFoundPage = () => {
   return (
     <Box
       display="flex"
-      flexDirection="column"
       alignItems="center"
       justifyContent="center"
       height="80vh"
     >
       <Typography variant="h1" component="h1" align="center">
-        ¡Bienvenido(a)!
+        404 Not Found
       </Typography>
     </Box>
   );
-}
-
-export default Home;
+};

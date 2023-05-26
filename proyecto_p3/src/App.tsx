@@ -17,6 +17,7 @@ import ViewServiceScreen from "./screens/ViewServiceScreen";
 import SalesScreen from "./screens/SalesScreen";
 import SaleScreen from "./screens/SaleScreen";
 import { ViewSale } from "./screens/ViewSale";
+import { NotFoundPage } from "./screens/NotFoundPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -52,11 +53,13 @@ function App() {
           <Route path="/sales" element={<SalesScreen />} />
           <Route path="/sales/:id" element={<SaleScreen />} />
           <Route path="/view-sale/:id" element={<ViewSale />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       ) : (
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
     </Router>
