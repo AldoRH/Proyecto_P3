@@ -13,6 +13,8 @@ import ViewProductScreen from './screens/ViewProductScreen';
 import ServicesScreen from './screens/ServicesScreen';
 import Service from './screens/ServiceScreen';
 import ViewServiceScreen from './screens/ViewServiceScreen';
+import SalesScreen from './screens/SalesScreen';
+import SaleScreen from './screens/SaleScreen';
 
 
 
@@ -34,6 +36,8 @@ root.render(
             <Route path="/services" element={<ServicesScreen/>}/>
             <Route path="/services/:id" element={<Service/>}/>
             <Route path="/view-service/:id" element={<ViewServiceScreen/>}/>
+            <Route path="/sales" element={<SalesScreen/>}/>
+            <Route path="/sales/:id" element={<SaleScreen/>}/>
         </Routes>
     </Router>
 

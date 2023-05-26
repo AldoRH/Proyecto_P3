@@ -29,6 +29,10 @@ const pages = [
       name:'Services',
       to:'/services',
   },
+  {
+    name:'Sales',
+    to:'/sales',
+},
     
 ];
 

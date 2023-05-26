@@ -75,7 +75,6 @@ function ServiceScreen() {
             <br/><br/>
             <TextField type="text" disabled name="cs" value={formService.cs} onChange={handleChange} fullWidth={true} label="Costo de servicio" variant="outlined" />
             <br/><br/>
-            <Button variant="outlined" onClick={save} >Save</Button>
             <NavLink 
                 to={`/services`} 
                 className="btn btn-info mx-2"
