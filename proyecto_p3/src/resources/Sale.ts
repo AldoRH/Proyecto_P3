@@ -1,9 +1,18 @@
-import { Product } from "./Product";
-import { Service } from "./Service";
-
-export interface Sale {
-    id: number,
-    products: Product[],
-    services: Service[],
-}
-
+export type Sale = {
+  products: {
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+    subtotal: number;
+  }[];
+  services: {
+    id: string;
+    name: string;
+    quantity: number;
+    price: number;
+    subtotal: number;
+  }[];
+  subtotal: number;
+  total: number;
+};
