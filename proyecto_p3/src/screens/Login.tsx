@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import { Link} from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { AlertsError } from '../components/Alert';
 
 export const Login = () => {            
 
@@ -31,7 +32,13 @@ export const Login = () => {
   return(
         <div style={{ maxHeight: '100vh', boxShadow: 'initial' }}>
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh" p={2}>
-                <Box p={3} bgcolor="white" boxShadow={2} borderRadius={8} maxWidth={600} width="100%">                  
+                <Box p={3} bgcolor="white" boxShadow={2} borderRadius={8} maxWidth={600} width="100%">
+                    {
+                        getError === null ? <></> : getError ===  'user' ?
+                         <AlertsError title='Usuario no encontrado' message='El usuario no ha sido encontrado en la base de datos'/> :
+                         <AlertsError title='Contraseña incorrecta' message='Por favor inserte la contraseña'/>
+
+                    }                  
                     <div style={{ textAlign: 'center' }}>
                         <h1>Bienvenido!!</h1>
                         <h3>Iniciar sesión</h3>
