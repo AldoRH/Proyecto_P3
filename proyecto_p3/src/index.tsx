@@ -5,12 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import "bootstrap/dist/css/bootstrap.css";
-import {
-  NavLink,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Home from "./screens/Home";
 import ProductsScreen from "./screens/ProductsScreen";
 import Product from "./screens/ProductScreen";
@@ -28,21 +23,6 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App />
-    <Router>
-      <ResponsiveAppBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<ProductsScreen />} />
-        <Route path="/products/:id" element={<Product />} />
-        <Route path="/view-product/:id" element={<ViewProductScreen />} />
-        <Route path="/services" element={<ServicesScreen />} />
-        <Route path="/services/:id" element={<Service />} />
-        <Route path="/view-service/:id" element={<ViewServiceScreen />} />
-        <Route path="/sales" element={<SalesScreen />} />
-        <Route path="/sales/:id" element={<SaleScreen />} />
-        <Route path="/view-sale/:id" element={<ViewSale />} />
-      </Routes>
-    </Router>
   </React.StrictMode>
 );
 
