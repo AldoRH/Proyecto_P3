@@ -7,8 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Login } from "./screens/Login";
 import { SignUp } from "./screens/SignUp";
-import Home from "./screens/Home";
-import ProductsScreen from "./screens/ProductsScreen";
+import ProductsScreen from "./screens/ProductScreen";
 import Product from "./screens/ProductScreen";
 import ViewProductScreen from "./screens/ViewProductScreen";
 import ServicesScreen from "./screens/ServicesScreen";
@@ -43,16 +42,15 @@ function App() {
         <></>
       ) : isAuthenticated ? (
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<SalesScreen />} />
+          <Route path="/sales/:id" element={<SaleScreen />} />
+          <Route path="/view-sale/:id" element={<ViewSale />} />
           <Route path="/products" element={<ProductsScreen />} />
           <Route path="/products/:id" element={<Product />} />
           <Route path="/view-product/:id" element={<ViewProductScreen />} />
           <Route path="/services" element={<ServicesScreen />} />
           <Route path="/services/:id" element={<Service />} />
           <Route path="/view-service/:id" element={<ViewServiceScreen />} />
-          <Route path="/sales" element={<SalesScreen />} />
-          <Route path="/sales/:id" element={<SaleScreen />} />
-          <Route path="/view-sale/:id" element={<ViewSale />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       ) : (
