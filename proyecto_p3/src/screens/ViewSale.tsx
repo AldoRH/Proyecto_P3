@@ -74,7 +74,7 @@ export const ViewSale = () => {
               Total: ${saleData.total}
             </Typography>
           </div>
-          <NavLink to={`/sales`} className="btn btn-info mx-2">
+          <NavLink to={`/`} className="btn btn-info mx-2">
             Return
           </NavLink>
         </div>

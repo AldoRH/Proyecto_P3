@@ -456,7 +456,7 @@ function SaleScreen() {
             <Button variant="outlined" onClick={handleSave}>
               Save
             </Button>
-            <NavLink to={`/sales`} className="btn btn-info mx-2">
+            <NavLink to={`/`} className="btn btn-info mx-2">
               Return
             </NavLink>
             <br />
