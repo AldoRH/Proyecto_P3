@@ -19,10 +19,9 @@ import { NavLink } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-// const pages = ['Products', 'Pricing', 'Blog'];
 const pages = [
   {
-    name: "Home",
+    name: "Sales",
     to: "/",
   },
   {
@@ -32,10 +31,6 @@ const pages = [
   {
     name: "Services",
     to: "/services",
-  },
-  {
-    name: "Sales",
-    to: "/sales",
   },
 ];
 
