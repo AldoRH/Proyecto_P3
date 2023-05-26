@@ -12,8 +12,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import { useState, MouseEvent} from 'react';
 import { NavLink } from 'react-router-dom';
+import { getAuth, signOut } from 'firebase/auth';
 
 // const pages = ['Products', 'Pricing', 'Blog'];
 const pages = [
@@ -36,11 +39,13 @@ const pages = [
     
 ];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const auth = getAuth();
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -56,6 +61,15 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);      
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
 
   return (
     <AppBar position="static" color="inherit" >
@@ -151,7 +165,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar />
               </IconButton>
             </Tooltip>
             <Menu
@@ -169,12 +183,13 @@ function ResponsiveAppBar() {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+            >              
+              <MenuItem  onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">
+                  <Button onClick={handleLogout}> <LogoutIcon/> Cerrar Sesion </Button>
+                  </Typography>
+              </MenuItem>
+              
             </Menu>
           </Box>
         </Toolbar>
