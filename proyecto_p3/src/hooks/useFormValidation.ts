@@ -24,14 +24,17 @@ const formReducer = (state: FormState, action: FormAction) => {
     case "SET_FIELD_VALUE":
       return {
         ...state,
-        [action.field]: action.value
+        [action.field]: action.value,
       };
     default:
       return state;
   }
 };
 
-const useFormValidation = (initialState: FormState, validations: Validations) => {
+const useFormValidation = (
+  initialState: FormState,
+  validations: Validations
+) => {
   const [formState, dispatch] = useReducer(formReducer, initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -61,11 +64,16 @@ const useFormValidation = (initialState: FormState, validations: Validations) =>
     return Object.keys(newErrors).length === 0;
   };
 
+  const updateFieldValue = (name: string, value: any) => {
+    dispatch({ type: "SET_FIELD_VALUE", field: name, value });
+  };
+
   return {
     formState,
     errors,
     handleChange,
-    validateForm
+    validateForm,
+    updateFieldValue,
   };
 };
 
