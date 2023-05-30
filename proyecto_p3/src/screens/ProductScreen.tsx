@@ -8,7 +8,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import useForm from "../hooks/useForm";
 import useFormValidation from "../hooks/useFormValidation";
 import {
   addProduct,
@@ -17,41 +16,40 @@ import {
 } from "../resources/ProductsFirebase";
 import { Product } from "../resources/Product";
 
-const emptyProduct: Product = {
-  id: 0,
-  name: "",
-  pv: 0,
-  pc: 0,
-  stock: 0,
-};
-
 function ProductScreen() {
   const { id } = useParams();
 
   useEffect(() => {
-    getProductData();
+    if (id) {
+      getProductData();
+    }
   }, []);
 
-  const [formProduct, handleChange] = useForm(emptyProduct);
+  const emptyProduct: Product = {
+    name: "",
+    pv: 0,
+    pc: 0,
+    stock: 0,
+  };
 
   const validationRules = {
     name: [{ rule: (value: any) => value !== "", message: "Name is required" }],
     pv: [
       {
-        rule: (value: any) => parseFloat(value) > 1,
-        message: "PV must be greater than 1",
+        rule: (value: any) => parseFloat(value) >= 1,
+        message: "Sale price must be greater than 0",
       },
     ],
     pc: [
       {
-        rule: (value: any) => parseFloat(value) > 1,
-        message: "PC must be greater than 1",
+        rule: (value: any) => parseFloat(value) >= 1,
+        message: "Purchase price must be greater than 0",
       },
     ],
     stock: [
       {
-        rule: (value: any) => parseFloat(value) > 1,
-        message: "Stock must be greater than 1",
+        rule: (value: any) => parseFloat(value) >= 1,
+        message: "Stock must be greater than 0",
       },
     ],
   };
@@ -61,29 +59,27 @@ function ProductScreen() {
     errors,
     handleChange: handleValidationChange,
     validateForm,
-  } = useFormValidation(formProduct, validationRules);
+    updateFieldValue,
+  } = useFormValidation(emptyProduct, validationRules);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const getProductData = async () => {
     const fbProduct = await getProductById(id);
+
     if (fbProduct) {
-      const {
-        name = fbProduct.name,
-        pv = fbProduct.pv,
-        pc = fbProduct.pc,
-        stock = fbProduct.stock,
-      } = fbProduct;
-      handleChange({ target: { name: "name", value: name } });
-      handleChange({ target: { name: "pv", value: pv } });
-      handleChange({ target: { name: "pc", value: pc } });
-      handleChange({ target: { name: "stock", value: stock } });
+      const { name, pv, pc, stock } = fbProduct;
+
+      updateFieldValue("name", name);
+      updateFieldValue("pv", pv);
+      updateFieldValue("pc", pc);
+      updateFieldValue("stock", stock);
     }
   };
 
   const update = async () => {
-    const result = await updateProduct(id, formProduct);
+    const result = await updateProduct(id, formState);
     return result !== undefined;
   };
 
@@ -99,7 +95,7 @@ function ProductScreen() {
     }
 
     let result;
-    if (id !== "0") {
+    if (id) {
       result = await update();
       result ? setSuccess("Updated product") : setError("Product not updated");
     } else {

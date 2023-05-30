@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Container,
@@ -17,12 +16,7 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { getProducts, deleteProduct } from "../resources/ProductsFirebase";
-import useForm from "../hooks/useForm";
-import {
-  DocumentData,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
-} from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 function ProductsScreen() {
   const [products, setProducts] = useState<
@@ -42,7 +36,7 @@ function ProductsScreen() {
     await deleteProduct(productId);
     getProductsData();
   };
-  const navigate = useNavigate();
+
   return (
     <Container>
       <Grid container spacing={2} marginTop={3}>
@@ -50,7 +44,9 @@ function ProductsScreen() {
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
             <Typography variant="h4">Product list</Typography>
-            <NavLink to={`/products/0`} className="btn btn-info mx-2">Add new product</NavLink>
+            <NavLink to={`/products/add`} className="btn btn-info mx-2">
+              Add new product
+            </NavLink>
             <Divider color="black" />
           </Grid>
         </Grid>
@@ -82,9 +78,9 @@ function ProductsScreen() {
                           }}
                         >
                           <TableCell>{id}</TableCell>
-                          <TableCell align="right"> {name}</TableCell>
-                          <TableCell align="right">{pv}</TableCell>
-                          <TableCell align="right">{pc}</TableCell>
+                          <TableCell align="right">{name}</TableCell>
+                          <TableCell align="right">${pv}</TableCell>
+                          <TableCell align="right">${pc}</TableCell>
                           <TableCell align="right">{stock}</TableCell>
                           <TableCell>
                             <NavLink

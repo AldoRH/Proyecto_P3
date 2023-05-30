@@ -19,6 +19,8 @@ export const ViewSale = () => {
     getData();
   }, []);
 
+  console.log(saleData);
+
   return (
     <Container
       maxWidth="sm"
@@ -43,32 +45,40 @@ export const ViewSale = () => {
               { locale: es }
             )}
           </Typography>
-          <div>
-            <Typography variant="h6" mt={4} mb={2}>
-              Products
-            </Typography>
-            <ul>
-              {saleData.products.map((product: ProductService) => (
-                <li key={product.id}>
-                  {product.name}: {product.quantity} x ${product.price} = $
-                  {product.subtotal}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <Typography variant="h6" mt={4} mb={2}>
-              Services
-            </Typography>
-            <ul>
-              {saleData.services.map((service: ProductService) => (
-                <li key={service.id}>
-                  {service.name}: {service.quantity} x ${service.price} = $
-                  {service.subtotal}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {saleData.products.length > 0 ? (
+            <div>
+              <Typography variant="h6" mt={4} mb={2}>
+                Products
+              </Typography>
+              <ul>
+                {saleData.products.map((product: ProductService) => (
+                  <li key={product.id}>
+                    {product.name}: {product.quantity} x ${product.price} = $
+                    {product.subtotal}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <></>
+          )}
+          {saleData.services.length > 0 ? (
+            <div>
+              <Typography variant="h6" mt={4} mb={2}>
+                Services
+              </Typography>
+              <ul>
+                {saleData.services.map((service: ProductService) => (
+                  <li key={service.id}>
+                    {service.name}: {service.quantity} x ${service.price} = $
+                    {service.subtotal}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <></>
+          )}
           <div>
             <Typography variant="h5" gutterBottom>
               Total: ${saleData.total}

@@ -13,11 +13,7 @@ import {
 import { Sale } from "../resources/Sale";
 import { getProducts } from "../resources/ProductsFirebase";
 import { getServices } from "../resources/ServicesFirebase";
-import {
-  DocumentData,
-  QueryDocumentSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { Product } from "../resources/Product";
 import { addSale } from "../resources/SalesFirebase";
@@ -49,12 +45,14 @@ function SaleScreen() {
 
   const [productSale, setProductSale] = useState<string[]>([]);
   const [serviceSale, setServiceSale] = useState<string[]>([]);
+
   const [productQuantities, setProductQuantities] = useState<{
     [key: string]: number;
   }>({});
   const [serviceQuantities, setServiceQuantities] = useState<{
     [key: string]: number;
   }>({});
+
   const [showSelectedItems, setShowSelectedItems] = useState(false);
 
   const handleChangeProductSale = (
@@ -302,6 +300,16 @@ function SaleScreen() {
         <Grid container>
           <Grid item md={4} sm={3} xs={0}></Grid>
           <Grid item md={4} sm={6} xs={12}>
+            {error && (
+              <Alert severity="error" onClose={() => setError("")}>
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert severity="success" onClose={() => setSuccess("")}>
+                {success}
+              </Alert>
+            )}
             <Typography variant="h4">Add sale</Typography>
           </Grid>
         </Grid>
@@ -417,42 +425,44 @@ function SaleScreen() {
             </Button>
             {showSelectedItems && (
               <div>
-                <Typography variant="h6">Selected products:</Typography>
-                {productSale.map((productId) => (
-                  <div key={productId}>
-                    <Typography variant="body1">
-                      {getProductName(productId)} (Quantity:{" "}
-                      {productQuantities[productId] || 0}, Subtotal: ${""}
-                      {getProductSubtotal(productId)})
-                    </Typography>
+                {productSale.length > 0 ? (
+                  <div>
+                    <Typography variant="h6">Selected products:</Typography>
+                    {productSale.map((productId) => (
+                      <div key={productId}>
+                        <Typography variant="body1">
+                          {getProductName(productId)} (Quantity:{" "}
+                          {productQuantities[productId] || 0}, Subtotal: ${""}
+                          {getProductSubtotal(productId)})
+                        </Typography>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <></>
+                )}
 
-                <Typography variant="h6">Selected services:</Typography>
-                {serviceSale.map((serviceId) => (
-                  <div key={serviceId}>
-                    <Typography variant="body1">
-                      {getServiceName(serviceId)} (Quantity:{" "}
-                      {serviceQuantities[serviceId] || 0}, Subtotal: ${""}
-                      {getServiceSubtotal(serviceId)})
-                    </Typography>
+                {serviceSale.length > 0 ? (
+                  <div>
+                    <Typography variant="h6">Selected services:</Typography>
+                    {serviceSale.map((serviceId) => (
+                      <div key={serviceId}>
+                        <Typography variant="body1">
+                          {getServiceName(serviceId)} (Quantity:{" "}
+                          {serviceQuantities[serviceId] || 0}, Subtotal: ${""}
+                          {getServiceSubtotal(serviceId)})
+                        </Typography>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <></>
+                )}
               </div>
             )}
 
             <Typography variant="h5">Total: ${getTotal()}</Typography>
             <br />
-            {error && (
-              <Alert severity="error" onClose={() => setError("")}>
-                {error}
-              </Alert>
-            )}
-            {success && (
-              <Alert severity="success" onClose={() => setSuccess("")}>
-                {success}
-              </Alert>
-            )}
             <Button variant="outlined" onClick={handleSave}>
               Save
             </Button>

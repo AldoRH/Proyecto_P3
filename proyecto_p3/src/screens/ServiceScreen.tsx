@@ -1,58 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { Service } from "../resources/Service";
-import { Alert, Button, Container, Grid, TextField, Typography } from "@mui/material";
-import useForm from '../hooks/useForm';
-import useFormValidation from '../hooks/useFormValidation';
-import { addService, updateService, getServiceById } from "../resources/ServicesFirebase";
-
-const emptyService: Service = {
-  id: 0,
-  name: '',
-  pv: 0,
-  cs: 0,
-};
+import {
+  Alert,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import useFormValidation from "../hooks/useFormValidation";
+import {
+  addService,
+  updateService,
+  getServiceById,
+} from "../resources/ServicesFirebase";
 
 function ServiceScreen() {
   const { id } = useParams();
 
   useEffect(() => {
-    getServiceData();
+    if (id) {
+      getServiceData();
+    }
   }, []);
 
-  const [formService, handleChange] = useForm(emptyService);
+  const emptyService: Service = {
+    name: "",
+    pv: 0,
+    cs: 0,
+  };
 
   const validationRules = {
-    name: [
-      { rule: (value: any) => value !== '', message: "Name is required" },
-    ],
+    name: [{ rule: (value: any) => value !== "", message: "Name is required" }],
     pv: [
-      { rule: (value: any) => parseFloat(value) > 1, message: "PV must be greater than 1" },
+      {
+        rule: (value: any) => parseFloat(value) >= 1,
+        message: "Sale price must be greater than 0",
+      },
     ],
     cs: [
-      { rule: (value: any) => parseFloat(value) > 1, message: "CS must be greater than 1" },
+      {
+        rule: (value: any) => parseFloat(value) >= 1,
+        message: "Purchase price must be greater than 0",
+      },
     ],
   };
 
-  const { formState, errors, handleChange: handleValidationChange, validateForm } = useFormValidation(formService, validationRules);
+  const {
+    formState,
+    errors,
+    handleChange: handleValidationChange,
+    validateForm,
+    updateFieldValue,
+  } = useFormValidation(emptyService, validationRules);
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const getServiceData = async () => {
     const fbService = await getServiceById(id);
+
     if (fbService) {
-      const { name = fbService.name, pv = fbService.pv, cs = fbService.cs } = fbService;
-      handleChange({ target: { name: "name", value: name } });
-      handleChange({ target: { name: "pv", value: pv } });
-      handleChange({ target: { name: "cs", value: cs } });
+      const { name, pv, cs } = fbService;
+      updateFieldValue("name", name);
+      updateFieldValue("pv", pv);
+      updateFieldValue("cs", cs);
     }
-  }
+  };
 
   const update = async () => {
-    const result = await updateService(id, formService);
+    const result = await updateService(id, formState);
     return result !== undefined;
-  }
+  };
 
   const save = async () => {
     const isValid = validateForm();
@@ -66,14 +86,14 @@ function ServiceScreen() {
     }
 
     let result;
-    if (id !== '0') {
+    if (id) {
       result = await update();
       result ? setSuccess("Updated service") : setError("Service not updated");
     } else {
       result = await addService(formState);
       result ? setSuccess("Service added") : setError("Service not added");
     }
-  }
+  };
 
   return (
     <Container>
@@ -101,7 +121,8 @@ function ServiceScreen() {
               error={!!errors.name}
               helperText={errors.name}
             />
-            <br /><br />
+            <br />
+            <br />
             <TextField
               type="number"
               required
@@ -114,7 +135,8 @@ function ServiceScreen() {
               error={!!errors.pv}
               helperText={errors.pv}
             />
-            <br /><br />
+            <br />
+            <br />
             <TextField
               type="number"
               required
@@ -127,9 +149,14 @@ function ServiceScreen() {
               error={!!errors.cs}
               helperText={errors.cs}
             />
-            <br /><br />
-            <Button variant="outlined" onClick={save}>Save</Button>
-            <NavLink to={`/services`} className="btn btn-info mx-2">Return</NavLink>
+            <br />
+            <br />
+            <Button variant="outlined" onClick={save}>
+              Save
+            </Button>
+            <NavLink to={`/services`} className="btn btn-info mx-2">
+              Return
+            </NavLink>
           </Grid>
         </Grid>
       </Grid>

@@ -49,7 +49,7 @@ function SalesScreen() {
         <Grid container>
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
-            <Typography variant="h4">Product list</Typography>
+            <Typography variant="h4">Sales list</Typography>
             <NavLink to={`/sales/0`} className="btn btn-info mx-2">
               Add new sale
             </NavLink>
