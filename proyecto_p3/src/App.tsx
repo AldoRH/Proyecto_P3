@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
 import "./App.css";
 import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import "bootstrap/dist/css/bootstrap.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Login } from "./screens/Login";
 import { SignUp } from "./screens/SignUp";
-import ProductsScreen from "./screens/ProductScreen";
+import ProductsScreen from "./screens/ProductsScreen";
 import Product from "./screens/ProductScreen";
 import ViewProductScreen from "./screens/ViewProductScreen";
 import ServicesScreen from "./screens/ServicesScreen";
@@ -42,15 +41,17 @@ function App() {
         <></>
       ) : isAuthenticated ? (
         <Routes>
-          <Route path="/" element={<SalesScreen />} />
-          <Route path="/sales/:id" element={<SaleScreen />} />
-          <Route path="/view-sale/:id" element={<ViewSale />} />
           <Route path="/products" element={<ProductsScreen />} />
+          <Route path="/products/add" element={<Product />} />
           <Route path="/products/:id" element={<Product />} />
           <Route path="/view-product/:id" element={<ViewProductScreen />} />
           <Route path="/services" element={<ServicesScreen />} />
+          <Route path="/services/add" element={<Service />} />
           <Route path="/services/:id" element={<Service />} />
           <Route path="/view-service/:id" element={<ViewServiceScreen />} />
+          <Route path="/" element={<SalesScreen />} />
+          <Route path="/sales/:id" element={<SaleScreen />} />
+          <Route path="/view-sale/:id" element={<ViewSale />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       ) : (
