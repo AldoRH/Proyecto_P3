@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -6,10 +6,10 @@ import { AlertsError } from "../components/Alert";
 
 export const Login = () => {
   const [email, setEmail] = useState<string>("");
-  const [getError, SetError] = useState<string | null>(null);
+  const [getError, setError] = useState<string | null>(null);
   const [password, setPassword] = useState<string>("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
@@ -19,9 +19,9 @@ export const Login = () => {
       const authError = error;
       console.log(authError.message);
       if (authError.message === "Firebase: Error (auth/user-not-found).") {
-        SetError("user");
+        setError("user");
       } else {
-        SetError("password");
+        setError("password");
       }
     }
   };
@@ -43,9 +43,7 @@ export const Login = () => {
           maxWidth={600}
           width="100%"
         >
-          {getError === null ? (
-            <></>
-          ) : getError === "user" ? (
+          {getError === null ? null : getError === "user" ? (
             <AlertsError
               title="Usuario no encontrado"
               message="El usuario no ha sido encontrado en la base de datos"
@@ -82,7 +80,7 @@ export const Login = () => {
                 />
               </Box>
               <Box
-                width={"100%"}
+                width="100%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -99,7 +97,7 @@ export const Login = () => {
                   <p style={{ color: "#6F7B8C", paddingTop: "30px" }}>
                     No te has registrado?{" "}
                     <Link
-                      to={"/signup"}
+                      to="/signup"
                       style={{ font: "caption", color: "#3B54AD" }}
                     >
                       Crea una cuenta

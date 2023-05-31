@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Container,
   Divider,
@@ -16,11 +18,12 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { NavLink } from "react-router-dom";
 import { getSales, deleteSale } from "../resources/SalesFirebase";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
-function SalesScreen() {
+const SalesScreen = () => {
+  const navigate = useNavigate();
+
   const [sales, setSales] = useState<
     QueryDocumentSnapshot<DocumentData>[] | []
   >([]);
@@ -49,7 +52,7 @@ function SalesScreen() {
         <Grid container>
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
-            <Typography variant="h4">Sales list</Typography>
+            <Typography variant="h4">Sales List</Typography>
             <NavLink to={`/sales/0`} className="btn btn-info mx-2">
               Add new sale
             </NavLink>
@@ -119,12 +122,16 @@ function SalesScreen() {
                           )}
                         </TableCell>
                         <TableCell align="center">
-                          <NavLink
-                            to={`/view-sale/${id}`}
-                            className="btn btn-info mx-2"
+                          <Button
+                            variant="contained"
+                            color="info"
+                            startIcon={<VisibilityIcon />}
+                            onClick={() => {
+                              navigate(`/view-sale/${id}`);
+                            }}
                           >
                             View
-                          </NavLink>
+                          </Button>
                           <Button
                             variant="contained"
                             color="error"
@@ -152,6 +159,6 @@ function SalesScreen() {
       </Grid>
     </Container>
   );
-}
+};
 
 export default SalesScreen;

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Container,
   Divider,
@@ -14,11 +17,12 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
 import { getProducts, deleteProduct } from "../resources/ProductsFirebase";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
-function ProductsScreen() {
+const ProductsScreen = () => {
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState<
     QueryDocumentSnapshot<DocumentData>[] | []
   >([]);
@@ -43,7 +47,7 @@ function ProductsScreen() {
         <Grid container>
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
-            <Typography variant="h4">Product list</Typography>
+            <Typography variant="h4">Products List</Typography>
             <NavLink to={`/products/add`} className="btn btn-info mx-2">
               Add new product
             </NavLink>
@@ -58,10 +62,10 @@ function ProductsScreen() {
                 <TableHead>
                   <TableRow>
                     <TableCell>ID</TableCell>
-                    <TableCell align="right">Nombre</TableCell>
-                    <TableCell align="right">Precio de venta</TableCell>
-                    <TableCell align="right">Precio de compra</TableCell>
-                    <TableCell align="right">Stock</TableCell>
+                    <TableCell align="center">Nombre</TableCell>
+                    <TableCell align="center">Precio de venta</TableCell>
+                    <TableCell align="center">Precio de compra</TableCell>
+                    <TableCell align="center">Stock</TableCell>
                     <TableCell align="center">Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -78,18 +82,21 @@ function ProductsScreen() {
                           }}
                         >
                           <TableCell>{id}</TableCell>
-                          <TableCell align="right">{name}</TableCell>
-                          <TableCell align="right">${pv}</TableCell>
-                          <TableCell align="right">${pc}</TableCell>
-                          <TableCell align="right">{stock}</TableCell>
-                          <TableCell>
-                            <NavLink
-                              to={`/products/${id}`}
-                              className="btn btn-info mx-2"
+                          <TableCell align="center">{name}</TableCell>
+                          <TableCell align="center">${pv}</TableCell>
+                          <TableCell align="center">${pc}</TableCell>
+                          <TableCell align="center">{stock}</TableCell>
+                          <TableCell align="center">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              startIcon={<EditIcon />}
+                              onClick={() => {
+                                navigate(`/products/${id}`);
+                              }}
                             >
                               Edit
-                            </NavLink>
-
+                            </Button>
                             <Button
                               variant="contained"
                               color="error"
@@ -105,12 +112,16 @@ function ProductsScreen() {
                             >
                               Delete
                             </Button>
-                            <NavLink
-                              to={`/view-product/${id}`}
-                              className="btn btn-info mx-2"
+                            <Button
+                              variant="contained"
+                              color="info"
+                              startIcon={<VisibilityIcon />}
+                              onClick={() => {
+                                navigate(`/view-product/${id}`);
+                              }}
                             >
                               View
-                            </NavLink>
+                            </Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -124,5 +135,6 @@ function ProductsScreen() {
       </Grid>
     </Container>
   );
-}
+};
+
 export default ProductsScreen;

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Container,
   Divider,
@@ -14,11 +17,12 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { NavLink } from "react-router-dom";
 import { getServices, deleteService } from "../resources/ServicesFirebase";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
-function ServicesScreen() {
+const ServicesScreen = () => {
+  const navigate = useNavigate();
+
   const [services, setServices] = useState<
     QueryDocumentSnapshot<DocumentData>[] | []
   >([]);
@@ -43,7 +47,7 @@ function ServicesScreen() {
         <Grid container>
           <Grid item md={1} sm={1} xs={0}></Grid>
           <Grid item md={10} sm={10} xs={12}>
-            <Typography variant="h4">Service list</Typography>
+            <Typography variant="h4">Service List</Typography>
             <NavLink to={`/services/add`} className="btn btn-info mx-2">
               Add new service
             </NavLink>
@@ -58,9 +62,9 @@ function ServicesScreen() {
                 <TableHead>
                   <TableRow>
                     <TableCell>ID</TableCell>
-                    <TableCell align="right">Nombre</TableCell>
-                    <TableCell align="right">Precio de venta</TableCell>
-                    <TableCell align="right">Costo del servicio</TableCell>
+                    <TableCell align="center">Nombre</TableCell>
+                    <TableCell align="center">Precio de venta</TableCell>
+                    <TableCell align="center">Costo del servicio</TableCell>
                     <TableCell align="center">Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -77,17 +81,20 @@ function ServicesScreen() {
                           }}
                         >
                           <TableCell>{id}</TableCell>
-                          <TableCell align="right">{name}</TableCell>
-                          <TableCell align="right">${pv}</TableCell>
-                          <TableCell align="right">${cs}</TableCell>
-                          <TableCell>
-                            <NavLink
-                              to={`/services/${id}`}
-                              className="btn btn-info mx-2"
+                          <TableCell align="center">{name}</TableCell>
+                          <TableCell align="center">${pv}</TableCell>
+                          <TableCell align="center">${cs}</TableCell>
+                          <TableCell align="center">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              startIcon={<EditIcon />}
+                              onClick={() => {
+                                navigate(`/services/${id}`);
+                              }}
                             >
                               Edit
-                            </NavLink>
-
+                            </Button>
                             <Button
                               variant="contained"
                               color="error"
@@ -103,12 +110,16 @@ function ServicesScreen() {
                             >
                               Delete
                             </Button>
-                            <NavLink
-                              to={`/view-service/${id}`}
-                              className="btn btn-info mx-2"
+                            <Button
+                              variant="contained"
+                              color="info"
+                              startIcon={<VisibilityIcon />}
+                              onClick={() => {
+                                navigate(`/view-service/${id}`);
+                              }}
                             >
                               View
-                            </NavLink>
+                            </Button>
                           </TableCell>
                         </TableRow>
                       );
@@ -122,5 +133,6 @@ function ServicesScreen() {
       </Grid>
     </Container>
   );
-}
+};
+
 export default ServicesScreen;

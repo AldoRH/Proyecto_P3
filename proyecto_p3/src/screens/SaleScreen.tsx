@@ -20,7 +20,7 @@ import { addSale } from "../resources/SalesFirebase";
 import { NavLink } from "react-router-dom";
 import { decrementProductQuantity } from "../resources/ProductsFirebase";
 
-function SaleScreen() {
+const SaleScreen = () => {
   const [products, setProducts] = useState<
     QueryDocumentSnapshot<DocumentData>[] | []
   >([]);
@@ -310,7 +310,7 @@ function SaleScreen() {
                 {success}
               </Alert>
             )}
-            <Typography variant="h4">Add sale</Typography>
+            <Typography variant="h4">Add Sale</Typography>
           </Grid>
         </Grid>
         <Grid container marginTop={3}>
@@ -476,6 +476,6 @@ function SaleScreen() {
       </Grid>
     </Container>
   );
-}
+};
 
 export default SaleScreen;

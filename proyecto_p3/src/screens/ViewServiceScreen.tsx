@@ -5,7 +5,7 @@ import { Container, Grid, TextField, Typography } from "@mui/material";
 import useForm from "../hooks/useForm";
 import { getServiceById } from "../resources/ServicesFirebase";
 
-function ServiceScreen() {
+const ServiceScreen = () => {
   const { id } = useParams();
 
   useEffect(() => {
@@ -19,6 +19,8 @@ function ServiceScreen() {
   };
 
   const [formService, handleChange] = useForm(emptyService);
+
+  const { name, pv, cs } = formService;
 
   const getServiceData = async () => {
     const fbService = await getServiceById(id);
@@ -48,9 +50,9 @@ function ServiceScreen() {
               type="text"
               disabled
               name="name"
-              value={formService.name}
+              value={name}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Nombre"
               variant="outlined"
             />
@@ -60,9 +62,9 @@ function ServiceScreen() {
               type="text"
               disabled
               name="pv"
-              value={formService.pv}
+              value={pv}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Precio venta"
               variant="outlined"
             />
@@ -72,9 +74,9 @@ function ServiceScreen() {
               type="text"
               disabled
               name="cs"
-              value={formService.cs}
+              value={cs}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Costo de servicio"
               variant="outlined"
             />
@@ -88,6 +90,6 @@ function ServiceScreen() {
       </Grid>
     </Container>
   );
-}
+};
 
 export default ServiceScreen;

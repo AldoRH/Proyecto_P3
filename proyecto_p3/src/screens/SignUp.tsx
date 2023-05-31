@@ -1,22 +1,15 @@
 import React, { useState } from "react";
-
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { Box, TextField, Button } from "@mui/material";
-
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
 import { AlertInformation } from "../components/Alert";
 
 export const SignUp = () => {
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
   const [passwordInvalid, setPasswordInvalid] = useState("");
 
   const auth = getAuth();
-
   const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -28,9 +21,7 @@ export const SignUp = () => {
         email,
         password
       );
-
       console.log(password.length);
-
       const user = userCredential.user;
 
       if (user) {
@@ -38,7 +29,6 @@ export const SignUp = () => {
       }
     } catch (error: any) {
       const authError = error;
-
       console.log(authError.message);
 
       if (authError.message === "Firebase: Error (auth/invalid-email).") {
@@ -87,7 +77,6 @@ export const SignUp = () => {
 
           <div style={{ textAlign: "center" }}>
             <h1>Bienvenido!!</h1>
-
             <h3>Registrate</h3>
 
             <form onSubmit={handleSignUp}>
@@ -128,6 +117,12 @@ export const SignUp = () => {
                   >
                     Registrate
                   </Button>
+                  <p style={{ color: "#6F7B8C", paddingTop: "30px" }}>
+                    Ya tienes una cuenta?{" "}
+                    <Link to="/" style={{ font: "caption", color: "#3B54AD" }}>
+                      Inicia sesión
+                    </Link>
+                  </p>
                 </div>
               </Box>
             </form>

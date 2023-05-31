@@ -16,7 +16,7 @@ import {
   getServiceById,
 } from "../resources/ServicesFirebase";
 
-function ServiceScreen() {
+const ServiceScreen = () => {
   const { id } = useParams();
 
   useEffect(() => {
@@ -55,6 +55,8 @@ function ServiceScreen() {
     updateFieldValue,
   } = useFormValidation(emptyService, validationRules);
 
+  const { name, pv, cs } = formState;
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -80,7 +82,7 @@ function ServiceScreen() {
       return;
     }
 
-    if (parseFloat(formState.pv) <= parseFloat(formState.cs)) {
+    if (parseFloat(pv) <= parseFloat(cs)) {
       setError("El precio de venta debe ser mayor que el costo del servicio");
       return;
     }
@@ -103,7 +105,7 @@ function ServiceScreen() {
           <Grid item md={4} sm={6} xs={12}>
             {success && <Alert severity="success">{success}</Alert>}
             {error && <Alert severity="error">{error}</Alert>}
-            <Typography variant="h4">Add/Edit service</Typography>
+            <Typography variant="h4">Add/Edit Service</Typography>
           </Grid>
         </Grid>
         <Grid container marginTop={3}>
@@ -113,7 +115,7 @@ function ServiceScreen() {
               type="text"
               required
               name="name"
-              value={formState.name}
+              value={name}
               onChange={handleValidationChange}
               fullWidth={true}
               label="Nombre"
@@ -127,7 +129,7 @@ function ServiceScreen() {
               type="number"
               required
               name="pv"
-              value={formState.pv}
+              value={pv}
               onChange={handleValidationChange}
               fullWidth={true}
               label="Precio venta"
@@ -141,7 +143,7 @@ function ServiceScreen() {
               type="number"
               required
               name="cs"
-              value={formState.cs}
+              value={cs}
               onChange={handleValidationChange}
               fullWidth={true}
               label="Costo de servicio"
@@ -162,6 +164,6 @@ function ServiceScreen() {
       </Grid>
     </Container>
   );
-}
+};
 
 export default ServiceScreen;

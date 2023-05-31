@@ -19,8 +19,6 @@ export const ViewSale = () => {
     getData();
   }, []);
 
-  console.log(saleData);
-
   return (
     <Container
       maxWidth="sm"

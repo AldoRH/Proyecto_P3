@@ -16,7 +16,7 @@ import {
 } from "../resources/ProductsFirebase";
 import { Product } from "../resources/Product";
 
-function ProductScreen() {
+const ProductScreen = () => {
   const { id } = useParams();
 
   useEffect(() => {
@@ -62,6 +62,8 @@ function ProductScreen() {
     updateFieldValue,
   } = useFormValidation(emptyProduct, validationRules);
 
+  const { name, pv, pc, stock } = formState;
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -89,7 +91,7 @@ function ProductScreen() {
       return;
     }
 
-    if (parseFloat(formState.pv) <= parseFloat(formState.pc)) {
+    if (parseFloat(pv) <= parseFloat(pc)) {
       setError("El precio de venta debe ser mayor que el precio de compra");
       return;
     }
@@ -112,7 +114,7 @@ function ProductScreen() {
           <Grid item md={4} sm={6} xs={12}>
             {success && <Alert severity="success">{success}</Alert>}
             {error && <Alert severity="error">{error}</Alert>}
-            <Typography variant="h4">Add/Edit product</Typography>
+            <Typography variant="h4">Add/Edit Product</Typography>
           </Grid>
         </Grid>
         <Grid container marginTop={3}>
@@ -122,9 +124,9 @@ function ProductScreen() {
               type="text"
               required
               name="name"
-              value={formState.name}
+              value={name}
               onChange={handleValidationChange}
-              fullWidth={true}
+              fullWidth
               label="Nombre"
               variant="outlined"
               error={!!errors.name}
@@ -136,9 +138,9 @@ function ProductScreen() {
               type="number"
               required
               name="pv"
-              value={formState.pv}
+              value={pv}
               onChange={handleValidationChange}
-              fullWidth={true}
+              fullWidth
               label="Precio venta"
               variant="outlined"
               error={!!errors.pv}
@@ -150,9 +152,9 @@ function ProductScreen() {
               type="number"
               required
               name="pc"
-              value={formState.pc}
+              value={pc}
               onChange={handleValidationChange}
-              fullWidth={true}
+              fullWidth
               label="Precio compra"
               variant="outlined"
               error={!!errors.pc}
@@ -164,9 +166,9 @@ function ProductScreen() {
               type="number"
               required
               name="stock"
-              value={formState.stock}
+              value={stock}
               onChange={handleValidationChange}
-              fullWidth={true}
+              fullWidth
               label="Stock"
               variant="outlined"
               inputProps={{ min: 1 }}
@@ -186,6 +188,6 @@ function ProductScreen() {
       </Grid>
     </Container>
   );
-}
+};
 
 export default ProductScreen;

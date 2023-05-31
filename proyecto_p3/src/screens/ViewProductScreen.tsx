@@ -5,7 +5,7 @@ import { Container, Grid, TextField, Typography } from "@mui/material";
 import useForm from "../hooks/useForm";
 import { getProductById } from "../resources/ProductsFirebase";
 
-function ProductScreen() {
+const ProductScreen = () => {
   const { id } = useParams();
 
   useEffect(() => {
@@ -20,6 +20,8 @@ function ProductScreen() {
   };
 
   const [formProduct, handleChange] = useForm(emptyProduct);
+
+  const { name, pc, pv, stock } = formProduct;
 
   const getProductData = async () => {
     const fbProduct = await getProductById(id);
@@ -50,9 +52,9 @@ function ProductScreen() {
               type="text"
               disabled
               name="name"
-              value={formProduct.name}
+              value={name}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Nombre"
               variant="outlined"
             />
@@ -62,9 +64,9 @@ function ProductScreen() {
               type="text"
               disabled
               name="pv"
-              value={formProduct.pv}
+              value={pv}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Precio venta"
               variant="outlined"
             />
@@ -74,9 +76,9 @@ function ProductScreen() {
               type="text"
               disabled
               name="pc"
-              value={formProduct.pc}
+              value={pc}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Precio compra"
               variant="outlined"
             />
@@ -86,9 +88,9 @@ function ProductScreen() {
               type="text"
               disabled
               name="stock"
-              value={formProduct.stock}
+              value={stock}
               onChange={handleChange}
-              fullWidth={true}
+              fullWidth
               label="Stock"
               variant="outlined"
             />
@@ -102,6 +104,6 @@ function ProductScreen() {
       </Grid>
     </Container>
   );
-}
+};
 
 export default ProductScreen;
