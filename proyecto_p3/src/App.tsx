@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import "./App.css";
-import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import "bootstrap/dist/css/bootstrap.css";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import { Login } from "./screens/Login";
 import { SignUp } from "./screens/SignUp";
 import ProductsScreen from "./screens/ProductsScreen";
@@ -17,29 +16,24 @@ import SaleScreen from "./screens/SaleScreen";
 import { ViewSale } from "./screens/ViewSale";
 import { NotFoundPage } from "./screens/NotFoundPage";
 
-function App() {
+const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const auth = getAuth();
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
+      setIsAuthenticated(!!user);
     });
-    return () => unsubscribe();
+
+    return unsubscribe;
   }, []);
 
   return (
-    <Router>
-      {isAuthenticated ? <ResponsiveAppBar /> : <></>}
+    <BrowserRouter>
+      {isAuthenticated && <ResponsiveAppBar />}
 
-      {isAuthenticated === null ? (
-        <></>
-      ) : isAuthenticated ? (
+      {isAuthenticated === null ? null : isAuthenticated ? (
         <Routes>
           <Route path="/products" element={<ProductsScreen />} />
           <Route path="/products/add" element={<Product />} />
@@ -61,8 +55,8 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       )}
-    </Router>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
