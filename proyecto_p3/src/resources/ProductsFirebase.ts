@@ -9,11 +9,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-const usersCollection = collection(db, "products");
+const productsCollection = collection(db, "products");
 
 export const addProduct = async (product: any) => {
   try {
-    await addDoc(usersCollection, product);
+    await addDoc(productsCollection, product);
     return true;
   } catch (error) {
     return false;
@@ -21,7 +21,7 @@ export const addProduct = async (product: any) => {
 };
 
 export const getProducts = async () => {
-  const result = await getDocs(usersCollection);
+  const result = await getDocs(productsCollection);
   return result;
 };
 

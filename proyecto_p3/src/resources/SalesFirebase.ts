@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-const dataCollection = collection(db, "sales");
+const salesCollection = collection(db, "sales");
 
 export const addSale = async (sale: any) => {
   try {
@@ -16,7 +16,7 @@ export const addSale = async (sale: any) => {
       ...sale,
       createdAt: new Date().toISOString(),
     };
-    await addDoc(dataCollection, saleWithTimestamp);
+    await addDoc(salesCollection, saleWithTimestamp);
     return true;
   } catch (error) {
     return false;
@@ -25,8 +25,7 @@ export const addSale = async (sale: any) => {
 
 export const getSales = async () => {
   try {
-    const result = await getDocs(dataCollection);
-    const salesData = result.docs;
+    const { docs: salesData } = await getDocs(salesCollection);
     return salesData;
   } catch (error) {
     console.log(error);
