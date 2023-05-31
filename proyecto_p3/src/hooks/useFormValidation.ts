@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer, useState, ChangeEvent } from "react";
 
 type FormState = {
   [key: string]: any;
@@ -38,7 +38,7 @@ const useFormValidation = (
   const [formState, dispatch] = useReducer(formReducer, initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     dispatch({ type: "SET_FIELD_VALUE", field: name, value });
   };
