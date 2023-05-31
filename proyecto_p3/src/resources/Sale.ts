@@ -15,4 +15,5 @@ export type Sale = {
   }[];
   subtotal: number;
   total: number;
+  createdAt?: string;
 };
